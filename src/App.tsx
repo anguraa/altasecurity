@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Camera, Wrench, Users, Phone, Mail, MapPin, Star, Menu, X, ArrowRight, CheckCircle, Play } from 'lucide-react';
-import { siteConfig } from './config/content';
+import { useLanguage } from './hooks/useLanguage';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
 
 function App() {
+  const { currentLanguage, translation, changeLanguage } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
@@ -40,22 +42,38 @@ function App() {
   const services = [
     {
       icon: Camera,
-      title: siteConfig.services.items[0].title,
-      description: siteConfig.services.items[0].description,
-      features: siteConfig.services.items[0].features
+      title: translation.services.items[0].title,
+      description: translation.services.items[0].description,
+      features: translation.services.items[0].features
     },
     {
       icon: Wrench,
-      title: siteConfig.services.items[1].title,
-      description: siteConfig.services.items[1].description,
-      features: siteConfig.services.items[1].features
+      title: translation.services.items[1].title,
+      description: translation.services.items[1].description,
+      features: translation.services.items[1].features
     },
     {
       icon: Shield,
-      title: siteConfig.services.items[2].title,
-      description: siteConfig.services.items[2].description,
-      features: siteConfig.services.items[2].features
+      title: translation.services.items[2].title,
+      description: translation.services.items[2].description,
+      features: translation.services.items[2].features
     }
+  ];
+
+  // Product images
+  const productImages = [
+    "https://images.pexels.com/photos/430208/pexels-photo-430208.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "https://images.pexels.com/photos/8566473/pexels-photo-8566473.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "https://images.pexels.com/photos/8142004/pexels-photo-8142004.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "https://images.pexels.com/photos/8142029/pexels-photo-8142029.jpeg?auto=compress&cs=tinysrgb&w=800"
+  ];
+
+  // Portfolio images
+  const portfolioImages = [
+    "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=800"
   ];
 
   return (
@@ -66,12 +84,12 @@ function App() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
               <Shield className="h-8 w-8 text-blue-700" />
-              <span className="font-bold text-xl text-gray-900">{siteConfig.siteName}</span>
+              <span className="font-bold text-xl text-gray-900">{translation.siteName}</span>
             </div>
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              {Object.entries(siteConfig.navigation).slice(0, -1).map(([key, label]) => (
+              {Object.entries(translation.navigation).slice(0, -1).map(([key, label]) => (
                 <button
                   key={key}
                   onClick={() => scrollToSection(key)}
@@ -88,12 +106,20 @@ function App() {
                 onClick={() => scrollToSection('contact')}
                 className="bg-blue-700 text-white px-6 py-2 rounded-lg hover:bg-blue-800 transition-colors duration-200 font-medium"
               >
-                {siteConfig.navigation.getQuote}
+                {translation.navigation.getQuote}
               </button>
+              <LanguageSwitcher 
+                currentLanguage={currentLanguage}
+                onLanguageChange={changeLanguage}
+              />
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center space-x-2">
+              <LanguageSwitcher 
+                currentLanguage={currentLanguage}
+                onLanguageChange={changeLanguage}
+              />
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-gray-600 hover:text-blue-700 transition-colors duration-200"
@@ -107,7 +133,7 @@ function App() {
           {isMenuOpen && (
             <div className="md:hidden border-t border-gray-200 bg-white">
               <div className="px-2 pt-2 pb-3 space-y-1">
-                {Object.entries(siteConfig.navigation).slice(0, -1).map(([key, label]) => (
+                {Object.entries(translation.navigation).slice(0, -1).map(([key, label]) => (
                   <button
                     key={key}
                     onClick={() => scrollToSection(key)}
@@ -120,7 +146,7 @@ function App() {
                   onClick={() => scrollToSection('contact')}
                   className="w-full text-left bg-blue-700 text-white px-3 py-2 rounded-lg hover:bg-blue-800 transition-colors duration-200 mt-2"
                 >
-                  {siteConfig.navigation.getQuote}
+                  {translation.navigation.getQuote}
                 </button>
               </div>
             </div>
@@ -135,11 +161,11 @@ function App() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  {siteConfig.hero.title}
-                  <span className="text-blue-700 block">{siteConfig.hero.titleHighlight}</span>
+                  {translation.hero.title}
+                  <span className="text-blue-700 block">{translation.hero.titleHighlight}</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  {siteConfig.hero.subtitle}
+                  {translation.hero.subtitle}
                 </p>
               </div>
               
@@ -148,29 +174,29 @@ function App() {
                   onClick={() => scrollToSection('contact')}
                   className="bg-blue-700 text-white px-8 py-4 rounded-lg hover:bg-blue-800 transition-all duration-200 font-semibold flex items-center justify-center group"
                 >
-                  {siteConfig.hero.primaryButton}
+                  {translation.hero.primaryButton}
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                 </button>
                 <button 
                   onClick={() => scrollToSection('services')}
                   className="border-2 border-blue-700 text-blue-700 px-8 py-4 rounded-lg hover:bg-blue-700 hover:text-white transition-all duration-200 font-semibold"
                 >
-                  {siteConfig.hero.secondaryButton}
+                  {translation.hero.secondaryButton}
                 </button>
               </div>
 
               <div className="flex items-center space-x-8 pt-4">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-700">{siteConfig.hero.stats.installations.number}</div>
-                  <div className="text-sm text-gray-600">{siteConfig.hero.stats.installations.label}</div>
+                  <div className="text-3xl font-bold text-blue-700">{translation.hero.stats.installations.number}</div>
+                  <div className="text-sm text-gray-600">{translation.hero.stats.installations.label}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-700">{siteConfig.hero.stats.support.number}</div>
-                  <div className="text-sm text-gray-600">{siteConfig.hero.stats.support.label}</div>
+                  <div className="text-3xl font-bold text-blue-700">{translation.hero.stats.support.number}</div>
+                  <div className="text-sm text-gray-600">{translation.hero.stats.support.label}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-700">{siteConfig.hero.stats.rating.number}</div>
-                  <div className="text-sm text-gray-600">{siteConfig.hero.stats.rating.label}</div>
+                  <div className="text-3xl font-bold text-blue-700">{translation.hero.stats.rating.number}</div>
+                  <div className="text-sm text-gray-600">{translation.hero.stats.rating.label}</div>
                 </div>
               </div>
             </div>
@@ -178,7 +204,7 @@ function App() {
             <div className="relative">
               <div className="relative z-10">
                 <img 
-                  src={siteConfig.hero.image}
+                  src="https://images.pexels.com/photos/8566473/pexels-photo-8566473.jpeg?auto=compress&cs=tinysrgb&w=1200"
                   alt="Security Camera Installation"
                   className="rounded-2xl shadow-2xl"
                 />
@@ -194,9 +220,9 @@ function App() {
       <section id="services" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">{siteConfig.services.title}</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{translation.services.title}</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {siteConfig.services.subtitle}
+              {translation.services.subtitle}
             </p>
           </div>
 
@@ -231,21 +257,21 @@ function App() {
       <section id="products" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">{siteConfig.products.title}</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{translation.products.title}</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {siteConfig.products.subtitle}
+              {translation.products.subtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {siteConfig.products.items.map((product, index) => (
+            {translation.products.items.map((product, index) => (
               <div 
                 key={index}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
                 <div className="relative overflow-hidden">
                   <img 
-                    src={product.image} 
+                    src={productImages[index]} 
                     alt={product.name}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -264,7 +290,7 @@ function App() {
                     ))}
                   </ul>
                   <button className="w-full bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-800 transition-colors duration-200 font-semibold">
-                    მეტის ნახვა
+                    {translation.products.viewMore}
                   </button>
                 </div>
               </div>
@@ -277,20 +303,20 @@ function App() {
       <section id="portfolio" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">{siteConfig.portfolio.title}</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{translation.portfolio.title}</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {siteConfig.portfolio.subtitle}
+              {translation.portfolio.subtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {siteConfig.portfolio.items.map((item, index) => (
+            {translation.portfolio.items.map((item, index) => (
               <div 
                 key={index}
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <img 
-                  src={item.image} 
+                  src={portfolioImages[index]} 
                   alt={item.title}
                   className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -313,14 +339,14 @@ function App() {
       <section className="py-20 bg-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">რას ამბობენ ჩვენი კლიენტები</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{translation.ui.clientsSay}</h2>
             <p className="text-xl text-gray-600">
-              ნუ მიიღებთ მხოლოდ ჩვენს სიტყვას - მოისმინეთ კმაყოფილი მომხმარებლები
+              {translation.ui.clientsSubtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {siteConfig.testimonials.map((testimonial, index) => (
+            {translation.testimonials.map((testimonial, index) => (
               <div 
                 key={index}
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
@@ -348,13 +374,13 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h2 className="text-4xl font-bold text-gray-900">{siteConfig.about.title}</h2>
+              <h2 className="text-4xl font-bold text-gray-900">{translation.about.title}</h2>
               <p className="text-xl text-gray-600 leading-relaxed">
-                {siteConfig.about.subtitle}
+                {translation.about.subtitle}
               </p>
               
               <div className="space-y-4">
-                {siteConfig.about.points.map((point, index) => (
+                {translation.about.points.map((point, index) => (
                   <div key={index} className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">{point}</span>
@@ -364,23 +390,23 @@ function App() {
 
               <div className="flex items-center space-x-8 pt-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-700">{siteConfig.about.stats.experience.number}</div>
-                  <div className="text-sm text-gray-600">{siteConfig.about.stats.experience.label}</div>
+                  <div className="text-2xl font-bold text-blue-700">{translation.about.stats.experience.number}</div>
+                  <div className="text-sm text-gray-600">{translation.about.stats.experience.label}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-700">{siteConfig.about.stats.satisfaction.number}</div>
-                  <div className="text-sm text-gray-600">{siteConfig.about.stats.satisfaction.label}</div>
+                  <div className="text-2xl font-bold text-blue-700">{translation.about.stats.satisfaction.number}</div>
+                  <div className="text-sm text-gray-600">{translation.about.stats.satisfaction.label}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-700">{siteConfig.about.stats.rating.number}</div>
-                  <div className="text-sm text-gray-600">{siteConfig.about.stats.rating.label}</div>
+                  <div className="text-2xl font-bold text-blue-700">{translation.about.stats.rating.number}</div>
+                  <div className="text-sm text-gray-600">{translation.about.stats.rating.label}</div>
                 </div>
               </div>
             </div>
 
             <div className="relative">
               <img 
-                src={siteConfig.about.image}
+                src="https://images.pexels.com/photos/8566462/pexels-photo-8566462.jpeg?auto=compress&cs=tinysrgb&w=1200"
                 alt="Security Installation Team"
                 className="rounded-2xl shadow-xl"
               />
@@ -388,8 +414,16 @@ function App() {
                 <div className="flex items-center space-x-3">
                   <Users className="h-8 w-8" />
                   <div>
-                    <div className="font-bold text-lg">ექსპერტი გუნდი</div>
-                    <div className="text-blue-200">სერტიფიცირებული პროფესიონალები</div>
+                    <div className="font-bold text-lg">
+                      {currentLanguage === 'ka' ? 'ექსპერტი გუნდი' : 
+                       currentLanguage === 'en' ? 'Expert Team' : 
+                       'Экспертная команда'}
+                    </div>
+                    <div className="text-blue-200">
+                      {currentLanguage === 'ka' ? 'სერტიფიცირებული პროფესიონალები' : 
+                       currentLanguage === 'en' ? 'Certified Professionals' : 
+                       'Сертифицированные профессионалы'}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -402,9 +436,9 @@ function App() {
       <section id="contact" className="py-20 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">{siteConfig.contactSection.title}</h2>
+            <h2 className="text-4xl font-bold mb-4">{translation.contactSection.title}</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              {siteConfig.contactSection.subtitle}
+              {translation.contactSection.subtitle}
             </p>
           </div>
 
@@ -414,34 +448,34 @@ function App() {
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.firstName}</label>
+                    <label className="block text-sm font-medium mb-2">{translation.contactSection.form.firstName}</label>
                     <input 
                       type="text"
                       className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="გიორგი"
+                      placeholder={currentLanguage === 'ka' ? 'გიორგი' : currentLanguage === 'en' ? 'John' : 'Георгий'}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.lastName}</label>
+                    <label className="block text-sm font-medium mb-2">{translation.contactSection.form.lastName}</label>
                     <input 
                       type="text"
                       className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="მამალაძე"
+                      placeholder={currentLanguage === 'ka' ? 'მამალაძე' : currentLanguage === 'en' ? 'Smith' : 'Иванов'}
                     />
                   </div>
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.email}</label>
+                    <label className="block text-sm font-medium mb-2">{translation.contactSection.form.email}</label>
                     <input 
                       type="email"
                       className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="giorgi@example.com"
+                      placeholder={currentLanguage === 'ka' ? 'giorgi@example.com' : currentLanguage === 'en' ? 'john@example.com' : 'georgiy@example.com'}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.phone}</label>
+                    <label className="block text-sm font-medium mb-2">{translation.contactSection.form.phone}</label>
                     <input 
                       type="tel"
                       className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
@@ -451,20 +485,20 @@ function App() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.propertyType}</label>
+                  <label className="block text-sm font-medium mb-2">{translation.contactSection.form.propertyType}</label>
                   <select className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                    {siteConfig.contactSection.form.propertyOptions.map((option, index) => (
+                    {translation.contactSection.form.propertyOptions.map((option, index) => (
                       <option key={index}>{option}</option>
                     ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.projectDetails}</label>
+                  <label className="block text-sm font-medium mb-2">{translation.contactSection.form.projectDetails}</label>
                   <textarea 
                     rows={4}
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                    placeholder={siteConfig.contactSection.form.projectPlaceholder}
+                    placeholder={translation.contactSection.form.projectPlaceholder}
                   ></textarea>
                 </div>
 
@@ -472,7 +506,7 @@ function App() {
                   type="submit"
                   className="w-full bg-blue-600 text-white py-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold flex items-center justify-center group"
                 >
-                  {siteConfig.contactSection.form.submitButton}
+                  {translation.contactSection.form.submitButton}
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                 </button>
               </form>
@@ -481,60 +515,76 @@ function App() {
             {/* Contact Information */}
             <div className="space-y-8">
               <div>
-                <h3 className="text-2xl font-bold mb-6">საკონტაქტო ინფორმაცია</h3>
+                <h3 className="text-2xl font-bold mb-6">{translation.contactSection.contactInfo}</h3>
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <Phone className="h-6 w-6 text-blue-400 mr-4" />
                     <div>
-                      <div className="font-semibold">{siteConfig.contact.phone}</div>
-                      <div className="text-gray-400 text-sm">{siteConfig.contact.emergencyLine}</div>
+                      <div className="font-semibold">{translation.contact.phone}</div>
+                      <div className="text-gray-400 text-sm">{translation.contact.emergencyLine}</div>
                     </div>
                   </div>
                   <div className="flex items-center">
                     <Mail className="h-6 w-6 text-blue-400 mr-4" />
                     <div>
-                      <div className="font-semibold">{siteConfig.contact.email}</div>
-                      <div className="text-gray-400 text-sm">{siteConfig.contact.responseTime}</div>
+                      <div className="font-semibold">{translation.contact.email}</div>
+                      <div className="text-gray-400 text-sm">{translation.contact.responseTime}</div>
                     </div>
                   </div>
                   <div className="flex items-center">
                     <MapPin className="h-6 w-6 text-blue-400 mr-4" />
                     <div>
-                      <div className="font-semibold">{siteConfig.contact.address}</div>
-                      <div className="text-gray-400 text-sm">{siteConfig.contact.city}</div>
+                      <div className="font-semibold">{translation.contact.address}</div>
+                      <div className="text-gray-400 text-sm">{translation.contact.city}</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-gray-800 p-6 rounded-xl">
-                <h4 className="font-bold text-lg mb-4">სამუშაო საათები</h4>
+                <h4 className="font-bold text-lg mb-4">{translation.contactSection.workingHours}</h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span>ორშაბათი - პარასკევი:</span>
-                    <span>{siteConfig.businessHours.weekdays}</span>
+                    <span>
+                      {currentLanguage === 'ka' ? 'ორშაბათი - პარასკევი:' : 
+                       currentLanguage === 'en' ? 'Monday - Friday:' : 
+                       'Понедельник - Пятница:'}
+                    </span>
+                    <span>{translation.businessHours.weekdays}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>შაბათი:</span>
-                    <span>{siteConfig.businessHours.saturday}</span>
+                    <span>
+                      {currentLanguage === 'ka' ? 'შაბათი:' : 
+                       currentLanguage === 'en' ? 'Saturday:' : 
+                       'Суббота:'}
+                    </span>
+                    <span>{translation.businessHours.saturday}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>კვირა:</span>
-                    <span>{siteConfig.businessHours.sunday}</span>
+                    <span>
+                      {currentLanguage === 'ka' ? 'კვირა:' : 
+                       currentLanguage === 'en' ? 'Sunday:' : 
+                       'Воскресенье:'}
+                    </span>
+                    <span>{translation.businessHours.sunday}</span>
                   </div>
                   <div className="border-t border-gray-700 pt-2 mt-3">
                     <div className="flex justify-between font-semibold text-blue-400">
-                      <span>გადაუდებელი მხარდაჭერა:</span>
-                      <span>{siteConfig.businessHours.emergency}</span>
+                      <span>
+                        {currentLanguage === 'ka' ? 'გადაუდებელი მხარდაჭერა:' : 
+                         currentLanguage === 'en' ? 'Emergency Support:' : 
+                         'Экстренная поддержка:'}
+                      </span>
+                      <span>{translation.businessHours.emergency}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-blue-900/50 p-6 rounded-xl border border-blue-800">
-                <h4 className="font-bold text-lg mb-3">{siteConfig.contactSection.consultationIncludes.title}</h4>
+                <h4 className="font-bold text-lg mb-3">{translation.contactSection.consultationIncludes.title}</h4>
                 <ul className="space-y-2 text-sm">
-                  {siteConfig.contactSection.consultationIncludes.items.map((item, index) => (
+                  {translation.contactSection.consultationIncludes.items.map((item, index) => (
                     <li key={index} className="flex items-center">
                       <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
                       {item}
@@ -554,29 +604,37 @@ function App() {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
                 <Shield className="h-8 w-8 text-blue-400" />
-                <span className="font-bold text-xl">{siteConfig.siteName}</span>
+                <span className="font-bold text-xl">{translation.siteName}</span>
               </div>
               <p className="text-gray-400 mb-4 max-w-md">
-                {siteConfig.footer.description}
+                {translation.footer.description}
               </p>
               <div className="text-sm text-gray-500">
-                {siteConfig.footer.copyright}
+                {translation.footer.copyright}
               </div>
             </div>
             
             <div>
-              <h4 className="font-semibold mb-4">სერვისები</h4>
+              <h4 className="font-semibold mb-4">
+                {currentLanguage === 'ka' ? 'სერვისები' : 
+                 currentLanguage === 'en' ? 'Services' : 
+                 'Услуги'}
+              </h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                {siteConfig.footer.services.map((service, index) => (
+                {translation.footer.services.map((service, index) => (
                   <li key={index}><a href="#" className="hover:text-white transition-colors">{service}</a></li>
                 ))}
               </ul>
             </div>
             
             <div>
-              <h4 className="font-semibold mb-4">სწრაფი ბმულები</h4>
+              <h4 className="font-semibold mb-4">
+                {currentLanguage === 'ka' ? 'სწრაფი ბმულები' : 
+                 currentLanguage === 'en' ? 'Quick Links' : 
+                 'Быстрые ссылки'}
+              </h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                {siteConfig.footer.quickLinks.map((link, index) => (
+                {translation.footer.quickLinks.map((link, index) => (
                   <li key={index}>
                     {index < 3 ? (
                       <button 
