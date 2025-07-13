@@ -145,8 +145,8 @@ export interface Translation {
 export const translations: Record<Language, Translation> = {
   // Georgian (Original)
   ka: {
-    siteName: "ალტა უსაფრთხოება",
-    siteTitle: "ალტა უსაფრთხოება - უსაფრთხოების კამერების გაყიდვა და მონტაჟი",
+    siteName: "Alta Security",
+    siteTitle: "Alta Security - უსაფრთხოების კამერების გაყიდვა და მონტაჟი",
     siteDescription: "პროფესიონალური უსაფრთხოების სისტემები სახლებისა და ბიზნესისთვის",
 
     contact: {
