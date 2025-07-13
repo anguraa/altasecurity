@@ -1,8 +1,12 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "alta-security-website",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Professional security camera sales and installation website for Alta Security",
+  "keywords": ["security", "cameras", "installation", "georgia", "tbilisi"],
+  "author": "Alta Security",
+  "homepage": "https://altasecurity.ge",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

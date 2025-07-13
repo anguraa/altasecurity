@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Camera, Wrench, Users, Phone, Mail, MapPin, Star, Menu, X, ArrowRight, CheckCircle, Play } from 'lucide-react';
+import { siteConfig } from './config/content';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,96 +40,21 @@ function App() {
   const services = [
     {
       icon: Camera,
-      title: "Security Camera Sales",
-      description: "Wide selection of high-quality security cameras for residential and commercial properties. From basic surveillance to advanced AI-powered systems.",
-      features: ["HD & 4K Cameras", "Night Vision", "Wireless & Wired Options", "Smart Detection"]
+      title: siteConfig.services.items[0].title,
+      description: siteConfig.services.items[0].description,
+      features: siteConfig.services.items[0].features
     },
     {
       icon: Wrench,
-      title: "Professional Installation",
-      description: "Expert installation services ensuring optimal camera placement and system configuration for maximum security coverage.",
-      features: ["Site Assessment", "Professional Mounting", "Network Setup", "System Configuration"]
+      title: siteConfig.services.items[1].title,
+      description: siteConfig.services.items[1].description,
+      features: siteConfig.services.items[1].features
     },
     {
       icon: Shield,
-      title: "Maintenance & Support",
-      description: "Comprehensive maintenance services and 24/7 technical support to keep your security system running smoothly.",
-      features: ["Regular Maintenance", "24/7 Support", "Software Updates", "Troubleshooting"]
-    }
-  ];
-
-  const products = [
-    {
-      name: "Indoor Dome Camera",
-      image: "https://images.pexels.com/photos/430208/pexels-photo-430208.jpeg?auto=compress&cs=tinysrgb&w=800",
-      price: "$299",
-      features: ["1080p HD", "Night Vision", "Motion Detection", "Mobile App"]
-    },
-    {
-      name: "Outdoor Bullet Camera",
-      image: "https://images.pexels.com/photos/8566473/pexels-photo-8566473.jpeg?auto=compress&cs=tinysrgb&w=800",
-      price: "$449",
-      features: ["4K Ultra HD", "Weatherproof", "Smart Alerts", "Cloud Storage"]
-    },
-    {
-      name: "PTZ Security Camera",
-      image: "https://images.pexels.com/photos/8142004/pexels-photo-8142004.jpeg?auto=compress&cs=tinysrgb&w=800",
-      price: "$899",
-      features: ["360° Coverage", "Zoom Capability", "Auto Tracking", "Professional Grade"]
-    },
-    {
-      name: "Complete System Package",
-      image: "https://images.pexels.com/photos/8142029/pexels-photo-8142029.jpeg?auto=compress&cs=tinysrgb&w=800",
-      price: "$1,999",
-      features: ["8 Camera System", "DVR/NVR Included", "Professional Installation", "1 Year Warranty"]
-    }
-  ];
-
-  const portfolioItems = [
-    {
-      title: "Residential Security System",
-      location: "Modern Family Home",
-      image: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Complete security solution with 6 cameras covering all entry points"
-    },
-    {
-      title: "Commercial Office Building",
-      location: "Downtown Business District",
-      image: "https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Advanced surveillance system with 24 cameras and central monitoring"
-    },
-    {
-      title: "Retail Store Security",
-      location: "Shopping Center",
-      image: "https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Strategic camera placement for theft prevention and customer safety"
-    },
-    {
-      title: "Warehouse Monitoring",
-      location: "Industrial Complex",
-      image: "https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description: "Comprehensive coverage of large warehouse facility with remote monitoring"
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Homeowner",
-      content: "Alta Security transformed our home security. The installation was professional and the cameras provide crystal clear footage day and night.",
-      rating: 5
-    },
-    {
-      name: "Mike Chen",
-      role: "Business Owner",
-      content: "Outstanding service from consultation to installation. Our retail store has never felt more secure. Highly recommend Alta Security.",
-      rating: 5
-    },
-    {
-      name: "Jennifer Williams",
-      role: "Property Manager",
-      content: "We've worked with Alta Security on multiple properties. Their expertise and reliability make them our go-to security solution provider.",
-      rating: 5
+      title: siteConfig.services.items[2].title,
+      description: siteConfig.services.items[2].description,
+      features: siteConfig.services.items[2].features
     }
   ];
 
@@ -140,29 +66,29 @@ function App() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
               <Shield className="h-8 w-8 text-blue-700" />
-              <span className="font-bold text-xl text-gray-900">Alta Security</span>
+              <span className="font-bold text-xl text-gray-900">{siteConfig.siteName}</span>
             </div>
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              {['home', 'services', 'products', 'portfolio', 'about', 'contact'].map((section) => (
+              {Object.entries(siteConfig.navigation).slice(0, -1).map(([key, label]) => (
                 <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className={`capitalize font-medium transition-colors duration-200 ${
-                    activeSection === section 
+                  key={key}
+                  onClick={() => scrollToSection(key)}
+                  className={`font-medium transition-colors duration-200 ${
+                    activeSection === key 
                       ? 'text-blue-700 border-b-2 border-blue-700' 
                       : 'text-gray-600 hover:text-blue-700'
                   }`}
                 >
-                  {section}
+                  {label}
                 </button>
               ))}
               <button 
                 onClick={() => scrollToSection('contact')}
                 className="bg-blue-700 text-white px-6 py-2 rounded-lg hover:bg-blue-800 transition-colors duration-200 font-medium"
               >
-                Get Quote
+                {siteConfig.navigation.getQuote}
               </button>
             </div>
 
@@ -181,20 +107,20 @@ function App() {
           {isMenuOpen && (
             <div className="md:hidden border-t border-gray-200 bg-white">
               <div className="px-2 pt-2 pb-3 space-y-1">
-                {['home', 'services', 'products', 'portfolio', 'about', 'contact'].map((section) => (
+                {Object.entries(siteConfig.navigation).slice(0, -1).map(([key, label]) => (
                   <button
-                    key={section}
-                    onClick={() => scrollToSection(section)}
-                    className="capitalize block px-3 py-2 text-gray-600 hover:text-blue-700 transition-colors duration-200 w-full text-left"
+                    key={key}
+                    onClick={() => scrollToSection(key)}
+                    className="block px-3 py-2 text-gray-600 hover:text-blue-700 transition-colors duration-200 w-full text-left"
                   >
-                    {section}
+                    {label}
                   </button>
                 ))}
                 <button 
                   onClick={() => scrollToSection('contact')}
                   className="w-full text-left bg-blue-700 text-white px-3 py-2 rounded-lg hover:bg-blue-800 transition-colors duration-200 mt-2"
                 >
-                  Get Quote
+                  {siteConfig.navigation.getQuote}
                 </button>
               </div>
             </div>
@@ -209,12 +135,11 @@ function App() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Secure Your
-                  <span className="text-blue-700 block">Peace of Mind</span>
+                  {siteConfig.hero.title}
+                  <span className="text-blue-700 block">{siteConfig.hero.titleHighlight}</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  Professional security camera systems for homes and businesses. Expert installation, 
-                  premium equipment, and 24/7 support to protect what matters most.
+                  {siteConfig.hero.subtitle}
                 </p>
               </div>
               
@@ -223,29 +148,29 @@ function App() {
                   onClick={() => scrollToSection('contact')}
                   className="bg-blue-700 text-white px-8 py-4 rounded-lg hover:bg-blue-800 transition-all duration-200 font-semibold flex items-center justify-center group"
                 >
-                  Get Free Consultation
+                  {siteConfig.hero.primaryButton}
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                 </button>
                 <button 
                   onClick={() => scrollToSection('services')}
                   className="border-2 border-blue-700 text-blue-700 px-8 py-4 rounded-lg hover:bg-blue-700 hover:text-white transition-all duration-200 font-semibold"
                 >
-                  View Services
+                  {siteConfig.hero.secondaryButton}
                 </button>
               </div>
 
               <div className="flex items-center space-x-8 pt-4">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-700">500+</div>
-                  <div className="text-sm text-gray-600">Installations</div>
+                  <div className="text-3xl font-bold text-blue-700">{siteConfig.hero.stats.installations.number}</div>
+                  <div className="text-sm text-gray-600">{siteConfig.hero.stats.installations.label}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-700">24/7</div>
-                  <div className="text-sm text-gray-600">Support</div>
+                  <div className="text-3xl font-bold text-blue-700">{siteConfig.hero.stats.support.number}</div>
+                  <div className="text-sm text-gray-600">{siteConfig.hero.stats.support.label}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-700">5★</div>
-                  <div className="text-sm text-gray-600">Rated Service</div>
+                  <div className="text-3xl font-bold text-blue-700">{siteConfig.hero.stats.rating.number}</div>
+                  <div className="text-sm text-gray-600">{siteConfig.hero.stats.rating.label}</div>
                 </div>
               </div>
             </div>
@@ -253,7 +178,7 @@ function App() {
             <div className="relative">
               <div className="relative z-10">
                 <img 
-                  src="https://images.pexels.com/photos/8566473/pexels-photo-8566473.jpeg?auto=compress&cs=tinysrgb&w=1200" 
+                  src={siteConfig.hero.image}
                   alt="Security Camera Installation"
                   className="rounded-2xl shadow-2xl"
                 />
@@ -269,10 +194,9 @@ function App() {
       <section id="services" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Security Solutions</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{siteConfig.services.title}</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From consultation to installation and ongoing support, we provide comprehensive 
-              security camera solutions tailored to your specific needs.
+              {siteConfig.services.subtitle}
             </p>
           </div>
 
@@ -307,15 +231,14 @@ function App() {
       <section id="products" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Premium Security Cameras</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{siteConfig.products.title}</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Choose from our selection of cutting-edge security cameras designed for 
-              every application and budget.
+              {siteConfig.products.subtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.map((product, index) => (
+            {siteConfig.products.items.map((product, index) => (
               <div 
                 key={index}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
@@ -341,7 +264,7 @@ function App() {
                     ))}
                   </ul>
                   <button className="w-full bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-800 transition-colors duration-200 font-semibold">
-                    Learn More
+                    მეტის ნახვა
                   </button>
                 </div>
               </div>
@@ -354,15 +277,14 @@ function App() {
       <section id="portfolio" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Recent Projects</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{siteConfig.portfolio.title}</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See how we've helped protect homes and businesses with our professional 
-              security camera installations.
+              {siteConfig.portfolio.subtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {portfolioItems.map((item, index) => (
+            {siteConfig.portfolio.items.map((item, index) => (
               <div 
                 key={index}
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
@@ -391,14 +313,14 @@ function App() {
       <section className="py-20 bg-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">What Our Clients Say</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">რას ამბობენ ჩვენი კლიენტები</h2>
             <p className="text-xl text-gray-600">
-              Don't just take our word for it - hear from satisfied customers
+              ნუ მიიღებთ მხოლოდ ჩვენს სიტყვას - მოისმინეთ კმაყოფილი მომხმარებლები
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
+            {siteConfig.testimonials.map((testimonial, index) => (
               <div 
                 key={index}
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
@@ -426,21 +348,13 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h2 className="text-4xl font-bold text-gray-900">Why Choose Alta Security?</h2>
+              <h2 className="text-4xl font-bold text-gray-900">{siteConfig.about.title}</h2>
               <p className="text-xl text-gray-600 leading-relaxed">
-                With over a decade of experience in security solutions, Alta Security has become 
-                the trusted choice for homeowners and businesses seeking reliable protection.
+                {siteConfig.about.subtitle}
               </p>
               
               <div className="space-y-4">
-                {[
-                  "Certified security professionals with extensive training",
-                  "Premium equipment from leading manufacturers",
-                  "Comprehensive warranties and ongoing support",
-                  "Custom solutions tailored to your specific needs",
-                  "24/7 monitoring and technical assistance",
-                  "Competitive pricing with transparent quotes"
-                ].map((point, index) => (
+                {siteConfig.about.points.map((point, index) => (
                   <div key={index} className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">{point}</span>
@@ -450,23 +364,23 @@ function App() {
 
               <div className="flex items-center space-x-8 pt-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-700">10+</div>
-                  <div className="text-sm text-gray-600">Years Experience</div>
+                  <div className="text-2xl font-bold text-blue-700">{siteConfig.about.stats.experience.number}</div>
+                  <div className="text-sm text-gray-600">{siteConfig.about.stats.experience.label}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-700">100%</div>
-                  <div className="text-sm text-gray-600">Customer Satisfaction</div>
+                  <div className="text-2xl font-bold text-blue-700">{siteConfig.about.stats.satisfaction.number}</div>
+                  <div className="text-sm text-gray-600">{siteConfig.about.stats.satisfaction.label}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-700">A+</div>
-                  <div className="text-sm text-gray-600">BBB Rating</div>
+                  <div className="text-2xl font-bold text-blue-700">{siteConfig.about.stats.rating.number}</div>
+                  <div className="text-sm text-gray-600">{siteConfig.about.stats.rating.label}</div>
                 </div>
               </div>
             </div>
 
             <div className="relative">
               <img 
-                src="https://images.pexels.com/photos/8566462/pexels-photo-8566462.jpeg?auto=compress&cs=tinysrgb&w=1200" 
+                src={siteConfig.about.image}
                 alt="Security Installation Team"
                 className="rounded-2xl shadow-xl"
               />
@@ -474,8 +388,8 @@ function App() {
                 <div className="flex items-center space-x-3">
                   <Users className="h-8 w-8" />
                   <div>
-                    <div className="font-bold text-lg">Expert Team</div>
-                    <div className="text-blue-200">Certified Professionals</div>
+                    <div className="font-bold text-lg">ექსპერტი გუნდი</div>
+                    <div className="text-blue-200">სერტიფიცირებული პროფესიონალები</div>
                   </div>
                 </div>
               </div>
@@ -488,10 +402,9 @@ function App() {
       <section id="contact" className="py-20 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Get Your Free Security Consultation</h2>
+            <h2 className="text-4xl font-bold mb-4">{siteConfig.contactSection.title}</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Ready to secure your property? Contact us today for a free consultation and 
-              custom security solution designed just for you.
+              {siteConfig.contactSection.subtitle}
             </p>
           </div>
 
@@ -501,34 +414,34 @@ function App() {
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2">First Name</label>
+                    <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.firstName}</label>
                     <input 
                       type="text"
                       className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="John"
+                      placeholder="გიორგი"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Last Name</label>
+                    <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.lastName}</label>
                     <input 
                       type="text"
                       className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Doe"
+                      placeholder="მამალაძე"
                     />
                   </div>
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Email</label>
+                    <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.email}</label>
                     <input 
                       type="email"
                       className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="john@example.com"
+                      placeholder="giorgi@example.com"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Phone</label>
+                    <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.phone}</label>
                     <input 
                       type="tel"
                       className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
@@ -538,23 +451,20 @@ function App() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Property Type</label>
+                  <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.propertyType}</label>
                   <select className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                    <option>Residential Home</option>
-                    <option>Commercial Building</option>
-                    <option>Retail Store</option>
-                    <option>Warehouse</option>
-                    <option>Office Building</option>
-                    <option>Other</option>
+                    {siteConfig.contactSection.form.propertyOptions.map((option, index) => (
+                      <option key={index}>{option}</option>
+                    ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Project Details</label>
+                  <label className="block text-sm font-medium mb-2">{siteConfig.contactSection.form.projectDetails}</label>
                   <textarea 
                     rows={4}
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Tell us about your security needs, number of cameras, specific areas to monitor, etc."
+                    placeholder={siteConfig.contactSection.form.projectPlaceholder}
                   ></textarea>
                 </div>
 
@@ -562,7 +472,7 @@ function App() {
                   type="submit"
                   className="w-full bg-blue-600 text-white py-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold flex items-center justify-center group"
                 >
-                  Get Free Consultation
+                  {siteConfig.contactSection.form.submitButton}
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                 </button>
               </form>
@@ -571,75 +481,65 @@ function App() {
             {/* Contact Information */}
             <div className="space-y-8">
               <div>
-                <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
+                <h3 className="text-2xl font-bold mb-6">საკონტაქტო ინფორმაცია</h3>
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <Phone className="h-6 w-6 text-blue-400 mr-4" />
                     <div>
-                      <div className="font-semibold">(555) 123-ALTA</div>
-                      <div className="text-gray-400 text-sm">24/7 Emergency Line</div>
+                      <div className="font-semibold">{siteConfig.contact.phone}</div>
+                      <div className="text-gray-400 text-sm">{siteConfig.contact.emergencyLine}</div>
                     </div>
                   </div>
                   <div className="flex items-center">
                     <Mail className="h-6 w-6 text-blue-400 mr-4" />
                     <div>
-                      <div className="font-semibold">info@altasecurity.com</div>
-                      <div className="text-gray-400 text-sm">Response within 2 hours</div>
+                      <div className="font-semibold">{siteConfig.contact.email}</div>
+                      <div className="text-gray-400 text-sm">{siteConfig.contact.responseTime}</div>
                     </div>
                   </div>
                   <div className="flex items-center">
                     <MapPin className="h-6 w-6 text-blue-400 mr-4" />
                     <div>
-                      <div className="font-semibold">123 Security Blvd</div>
-                      <div className="text-gray-400 text-sm">Your City, State 12345</div>
+                      <div className="font-semibold">{siteConfig.contact.address}</div>
+                      <div className="text-gray-400 text-sm">{siteConfig.contact.city}</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-gray-800 p-6 rounded-xl">
-                <h4 className="font-bold text-lg mb-4">Business Hours</h4>
+                <h4 className="font-bold text-lg mb-4">სამუშაო საათები</h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span>Monday - Friday:</span>
-                    <span>8:00 AM - 6:00 PM</span>
+                    <span>ორშაბათი - პარასკევი:</span>
+                    <span>{siteConfig.businessHours.weekdays}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Saturday:</span>
-                    <span>9:00 AM - 4:00 PM</span>
+                    <span>შაბათი:</span>
+                    <span>{siteConfig.businessHours.saturday}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Sunday:</span>
-                    <span>Emergency Only</span>
+                    <span>კვირა:</span>
+                    <span>{siteConfig.businessHours.sunday}</span>
                   </div>
                   <div className="border-t border-gray-700 pt-2 mt-3">
                     <div className="flex justify-between font-semibold text-blue-400">
-                      <span>Emergency Support:</span>
-                      <span>24/7 Available</span>
+                      <span>გადაუდებელი მხარდაჭერა:</span>
+                      <span>{siteConfig.businessHours.emergency}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-blue-900/50 p-6 rounded-xl border border-blue-800">
-                <h4 className="font-bold text-lg mb-3">Free Consultation Includes:</h4>
+                <h4 className="font-bold text-lg mb-3">{siteConfig.contactSection.consultationIncludes.title}</h4>
                 <ul className="space-y-2 text-sm">
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
-                    Site security assessment
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
-                    Custom system design
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
-                    Detailed project quote
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
-                    Equipment recommendations
-                  </li>
+                  {siteConfig.contactSection.consultationIncludes.items.map((item, index) => (
+                    <li key={index} className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                      {item}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -654,34 +554,42 @@ function App() {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
                 <Shield className="h-8 w-8 text-blue-400" />
-                <span className="font-bold text-xl">Alta Security</span>
+                <span className="font-bold text-xl">{siteConfig.siteName}</span>
               </div>
               <p className="text-gray-400 mb-4 max-w-md">
-                Your trusted partner in security solutions. Protecting homes and businesses 
-                with cutting-edge technology and professional service.
+                {siteConfig.footer.description}
               </p>
               <div className="text-sm text-gray-500">
-                © 2025 Alta Security. All rights reserved.
+                {siteConfig.footer.copyright}
               </div>
             </div>
             
             <div>
-              <h4 className="font-semibold mb-4">Services</h4>
+              <h4 className="font-semibold mb-4">სერვისები</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Camera Sales</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Installation</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Maintenance</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Support</a></li>
+                {siteConfig.footer.services.map((service, index) => (
+                  <li key={index}><a href="#" className="hover:text-white transition-colors">{service}</a></li>
+                ))}
               </ul>
             </div>
             
             <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <h4 className="font-semibold mb-4">სწრაფი ბმულები</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><button onClick={() => scrollToSection('about')} className="hover:text-white transition-colors">About Us</button></li>
-                <li><button onClick={() => scrollToSection('portfolio')} className="hover:text-white transition-colors">Portfolio</button></li>
-                <li><button onClick={() => scrollToSection('contact')} className="hover:text-white transition-colors">Contact</button></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+                {siteConfig.footer.quickLinks.map((link, index) => (
+                  <li key={index}>
+                    {index < 3 ? (
+                      <button 
+                        onClick={() => scrollToSection(['about', 'portfolio', 'contact'][index])} 
+                        className="hover:text-white transition-colors"
+                      >
+                        {link}
+                      </button>
+                    ) : (
+                      <a href="#" className="hover:text-white transition-colors">{link}</a>
+                    )}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
